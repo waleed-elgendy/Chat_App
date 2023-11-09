@@ -80,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                   obscure: false,
                   hint: "Enter your E-mail",
                   label: SizedBox(
-                    width: 100.w,
+                    width: 101.w,
                     child: Row(
                       children: [
                         Icon(

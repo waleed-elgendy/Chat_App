@@ -76,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   obscure: false,
                   hint: "Enter your E-mail",
                   label: SizedBox(
-                    width: 100,
+                    width: 101.w,
                     child: Row(
                       children: [
                         Icon(
