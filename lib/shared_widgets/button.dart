@@ -1,5 +1,6 @@
 import 'package:chat_app/shared_widgets/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomButton extends StatelessWidget {
   const CustomButton({Key? key, required this.text,  this.ontap}) : super(key: key);
@@ -12,18 +13,18 @@ class CustomButton extends StatelessWidget {
       onTap: ontap,
       child: Padding(
         padding:
-            const EdgeInsets.only(top: 30, left: 100, right: 100, bottom: 15),
+             EdgeInsets.only(top: 30.h, left: 100.w, right: 100.w, bottom: 15.w),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(18.dm),
           ),
           width: double.infinity,
-          height: 50,
+          height: 50.h,
           child:  Center(
             child: Text(
               text,
-              style: const TextStyle(color: primaryColor, fontSize: 30),
+              style:  TextStyle(color: primaryColor, fontSize: 30.sp),
             ),
           ),
         ),

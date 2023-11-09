@@ -4,10 +4,10 @@ import 'package:chat_app/helper/show_snack_bar.dart';
 import 'package:chat_app/pages/chat_page.dart';
 import 'package:chat_app/pages/register_page.dart';
 import 'package:chat_app/shared_widgets/button.dart';
-import 'package:chat_app/shared_widgets/constants.dart';
 import 'package:chat_app/shared_widgets/textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class LoginPage extends StatefulWidget {
@@ -29,40 +29,42 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
         backgroundColor: const Color(0xff2B475E),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
           child: Form(
             key: formKey,
             child: ListView(
               children: [
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 70,
+                    padding: EdgeInsets.only(
+                      top: 70.h,
                     ),
                     child: Image.asset(
                       "assets/logo.png",
-                      width: 150,
+                      width: 150.w,
                     ),
                   ),
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "Chat",
-                      style: TextStyle(color: Color(0xfffeb200), fontSize: 50),
+                      style: TextStyle(
+                          color: const Color(0xfffeb200), fontSize: 50.sp),
                     ),
                     Text(
                       " App",
-                      style: TextStyle(color: Colors.white, fontSize: 50),
+                      style: TextStyle(color: Colors.white, fontSize: 50.sp),
                     ),
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 25, top: 80),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 25.h, top: 80.h),
                   child: Text(
                     "LOGIN",
-                    style: TextStyle(color: Color(0xffC7EDE6), fontSize: 30),
+                    style: TextStyle(
+                        color: const Color(0xffC7EDE6), fontSize: 30.sp),
                   ),
                 ),
                 CustomTextFormField(
@@ -70,24 +72,26 @@ class _LoginPageState extends State<LoginPage> {
                     if (data!.isEmpty) {
                       return "field is required";
                     }
+
                   },
                   onchange: (data) {
                     email = data;
                   },
                   obscure: false,
                   hint: "Enter your E-mail",
-                  label: const SizedBox(
-                    width: 100,
+                  label: SizedBox(
+                    width: 100.w,
                     child: Row(
                       children: [
                         Icon(
                           Icons.email_outlined,
                           color: Colors.white,
-                          size: 30,
+                          size: 30.dm,
                         ),
                         Text(
                           "  E-mail",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 20.sp),
                         )
                       ],
                     ),
@@ -98,23 +102,25 @@ class _LoginPageState extends State<LoginPage> {
                     if (data!.isEmpty) {
                       return "field is required";
                     }
+
                   },
                   onchange: (data) {
                     pass = data;
                   },
                   hint: "Enter your Password",
-                  label: const SizedBox(
-                    width: 135,
+                  label: SizedBox(
+                    width: 135.w,
                     child: Row(
                       children: [
                         Icon(
                           Icons.lock,
                           color: Colors.white,
-                          size: 30,
+                          size: 30.dm,
                         ),
                         Text(
                           "  Password",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 20.sp),
                         )
                       ],
                     ),
@@ -147,12 +153,15 @@ class _LoginPageState extends State<LoginPage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) {
-                                return ChatPage(email: email!,);
+                                return ChatPage(
+                                  email: email!,
+                                );
                               },
                             ),
                           );
                         } catch (e) {
-                          showSnackBar(context, "check email or password and try again");
+                          showSnackBar(
+                              context, "check email or password and try again");
                         }
                         setState(() {
                           isLoading = false;
@@ -162,9 +171,9 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       "Don't have an account?",
-                      style: TextStyle(color: Colors.white, fontSize: 15),
+                      style: TextStyle(color: Colors.white, fontSize: 15.sp),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -175,15 +184,17 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         );
                       },
-                      child: const Text(
+                      child: Text(
                         " Register",
-                        style:
-                            TextStyle(color: Color(0xffC7EDE6), fontSize: 16),
+                        style: TextStyle(
+                            color: const Color(0xffC7EDE6), fontSize: 16.sp),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 20,)
+                SizedBox(
+                  height: 20.h,
+                )
               ],
             ),
           ),
@@ -193,7 +204,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> loginUser() async {
-    UserCredential user = await FirebaseAuth.instance
+     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email!, password: pass!);
   }
 }

@@ -3,6 +3,7 @@ import 'package:chat_app/shared_widgets/chatBuble.dart';
 import 'package:chat_app/shared_widgets/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatPage extends StatelessWidget {
   ChatPage({super.key, required this.email});
@@ -37,7 +38,7 @@ class ChatPage extends StatelessWidget {
                 children: [
                   Image.asset(
                     "assets/logo.png",
-                    width: 62,
+                    width: 62.w,
                   ),
                   const Text("Chat", style: TextStyle(color: Colors.white)),
                 ],
@@ -64,7 +65,7 @@ class ChatPage extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8),
+                  padding: EdgeInsets.all(8.dm),
                   child: TextFormField(
                     validator: (data) {
                       if (data!.isEmpty) {
@@ -76,7 +77,7 @@ class ChatPage extends StatelessWidget {
                       message = value;
                     },
                     onFieldSubmitted: (value) {
-                     if (!formKey.currentState!.validate()){
+                      if (!formKey.currentState!.validate()) {
                         messages.add({
                           'messages': value,
                           'createdAt': DateTime.now(),
@@ -104,24 +105,25 @@ class ChatPage extends StatelessWidget {
                             color: primaryColor,
                             width: 1,
                           ),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(20.dm),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderSide: const BorderSide(
                             color: primaryColor,
                             width: 1,
                           ),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(20.dm),
                         ),
                         suffixIcon: IconButton(
                             onPressed: () {
-                              if(message!=''){
-                              messages.add({
-                                'messages': message,
-                                'createdAt': DateTime.now(),
-                                'id': email,
-                              });}
-                              message='';
+                              if (message != '') {
+                                messages.add({
+                                  'messages': message,
+                                  'createdAt': DateTime.now(),
+                                  'id': email,
+                                });
+                              }
+                              message = '';
                               controller.clear();
                               controler.animateTo(
                                 0,
@@ -133,9 +135,9 @@ class ChatPage extends StatelessWidget {
                               Icons.send,
                               color: primaryColor,
                             ))),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: primaryColor,
-                      fontSize: 18,
+                      fontSize: 18.sp,
                       fontWeight: FontWeight.normal,
                     ),
                   ),
@@ -154,7 +156,7 @@ class ChatPage extends StatelessWidget {
                 children: [
                   Image.asset(
                     "assets/logo.png",
-                    width: 62,
+                    width: 62.w,
                   ),
                   const Text("Chat", style: TextStyle(color: Colors.white)),
                 ],

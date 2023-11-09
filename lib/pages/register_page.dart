@@ -5,19 +5,19 @@ import 'package:chat_app/shared_widgets/constants.dart';
 import 'package:chat_app/shared_widgets/textfield.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
-
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  GlobalKey<FormState> formKey=GlobalKey();
-  bool passobsure = true,isLoading=false;
+  GlobalKey<FormState> formKey = GlobalKey();
+  bool passobsure = true, isLoading = false;
   String? email, pass;
   @override
   Widget build(BuildContext context) {
@@ -26,46 +26,48 @@ class _RegisterPageState extends State<RegisterPage> {
       child: Scaffold(
         backgroundColor: primaryColor,
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
+          padding: EdgeInsets.symmetric(horizontal: 10.w),
           child: Form(
             key: formKey,
             child: ListView(
               children: [
                 Center(
                   child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 70,
+                    padding: EdgeInsets.only(
+                      top: 70.h,
                     ),
                     child: Image.asset(
                       "assets/logo.png",
-                      width: 150,
+                      width: 150.w,
                     ),
                   ),
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "Chat",
-                      style: TextStyle(color: Color(0xfffeb200), fontSize: 50),
+                      style: TextStyle(
+                          color: const Color(0xfffeb200), fontSize: 50.sp),
                     ),
                     Text(
                       " App",
-                      style: TextStyle(color: Colors.white, fontSize: 50),
+                      style: TextStyle(color: Colors.white, fontSize: 50.sp),
                     ),
                   ],
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 25, top: 80),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 25.h, top: 80.h),
                   child: Text(
                     "REGISTER",
-                    style: TextStyle(color: Color(0xffC7EDE6), fontSize: 30),
+                    style: TextStyle(
+                        color: const Color(0xffC7EDE6), fontSize: 30.sp),
                   ),
                 ),
                 CustomTextFormField(
-                  validate: (data){
-                    if(data!.isEmpty){
-                     return "field is required";
+                  validate: (data) {
+                    if (data!.isEmpty) {
+                      return "field is required";
                     }
                   },
                   onchange: (data) {
@@ -73,26 +75,27 @@ class _RegisterPageState extends State<RegisterPage> {
                   },
                   obscure: false,
                   hint: "Enter your E-mail",
-                  label: const SizedBox(
+                  label: SizedBox(
                     width: 100,
                     child: Row(
                       children: [
                         Icon(
                           Icons.email_outlined,
                           color: Colors.white,
-                          size: 30,
+                          size: 30.dm,
                         ),
                         Text(
                           "  E-mail",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 20.sp),
                         )
                       ],
                     ),
                   ),
                 ),
                 CustomTextFormField(
-                  validate: (data){
-                    if(data!.isEmpty){
+                  validate: (data) {
+                    if (data!.isEmpty) {
                       return "field is required";
                     }
                   },
@@ -100,18 +103,19 @@ class _RegisterPageState extends State<RegisterPage> {
                     pass = data;
                   },
                   hint: "Enter your Password",
-                  label: const SizedBox(
-                    width: 135,
+                  label: SizedBox(
+                    width: 135.w,
                     child: Row(
                       children: [
                         Icon(
                           Icons.lock,
                           color: Colors.white,
-                          size: 30,
+                          size: 30.dm,
                         ),
                         Text(
                           "  Password",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          style:
+                              TextStyle(color: Colors.white, fontSize: 20.sp),
                         )
                       ],
                     ),
@@ -134,9 +138,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 CustomButton(
                     text: "Register",
                     ontap: () async {
-                      if(formKey.currentState!.validate()){
+                      if (formKey.currentState!.validate()) {
                         setState(() {
-                          isLoading=true;
+                          isLoading = true;
                         });
                         try {
                           await registerUser();
@@ -148,32 +152,36 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                           );
                         } catch (e) {
-                          showSnackBar(context, "check email or password and try again");
+                          showSnackBar(
+                              context, "check email or password and try again");
                         }
                         setState(() {
-                          isLoading=false;
+                          isLoading = false;
                         });
                       }
                     }),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       "Already have an account?",
-                      style: TextStyle(color: Colors.white, fontSize: 15),
+                      style: TextStyle(color: Colors.white, fontSize: 15.sp),
                     ),
                     GestureDetector(
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: const Text(
+                      child: Text(
                         " Login",
-                        style: TextStyle(color: Color(0xffC7EDE6), fontSize: 16),
+                        style: TextStyle(
+                            color: const Color(0xffC7EDE6), fontSize: 16.sp),
                       ),
                     ),
                   ],
                 ),
-                 const SizedBox(height: 35,)
+                SizedBox(
+                  height: 35.h,
+                )
               ],
             ),
           ),
@@ -182,9 +190,8 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-
   Future<void> registerUser() async {
-    UserCredential user = await FirebaseAuth.instance
+     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email!, password: pass!);
   }
 }
