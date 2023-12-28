@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 class CustomTextFormField extends StatelessWidget {
-  const CustomTextFormField({Key? key, required this.hint, required this.label,this.suffix,  required this.obscure, this.onchange, this.validate}) : super(key: key);
+  const CustomTextFormField({Key? key, required this.hint, required this.label,this.suffix,  required this.obscure, this.onchange, this.validate, required this.keyboardType}) : super(key: key);
   final String hint;
   final Widget? label,suffix;
   final bool obscure;
   final Function(String)? onchange ;
   final String? Function(String?)? validate;
+  final TextInputType keyboardType;
 
 
   @override
@@ -44,12 +45,12 @@ class CustomTextFormField extends StatelessWidget {
           ),
         ),
         obscureText: obscure,
+        keyboardType: keyboardType,
         style:  TextStyle(
             color: Colors.lightBlue,
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
             fontFamily: 'Segue UI'),
-        keyboardType: TextInputType.emailAddress,
       ),
     );
   }

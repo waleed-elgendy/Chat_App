@@ -1,14 +1,18 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, prefer_const_constructors
 
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:chat_app/helper/show_snack_bar.dart';
-import 'package:chat_app/pages/chat_page.dart';
+import 'package:chat_app/pages/home_page.dart';
 import 'package:chat_app/pages/register_page.dart';
 import 'package:chat_app/shared_widgets/button.dart';
+import 'package:chat_app/shared_widgets/constants.dart';
 import 'package:chat_app/shared_widgets/textfield.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -17,17 +21,21 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
+CollectionReference allUsers =
+    FirebaseFirestore.instance.collection('allUsers');
+
 class _LoginPageState extends State<LoginPage> {
   GlobalKey<FormState> formKey = GlobalKey();
-  bool passobsure = true, isLoading = false;
+  bool passobscure = true, isLoading = false;
   String? email, pass;
 
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
+      progressIndicator: const CircularProgressIndicator(color: primaryColor),
       inAsyncCall: isLoading,
       child: Scaffold(
-        backgroundColor: const Color(0xff2B475E),
+        backgroundColor: primaryColor,
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.w),
           child: Form(
@@ -37,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                 Center(
                   child: Padding(
                     padding: EdgeInsets.only(
-                      top: 70.h,
+                      top: 60.h,
                     ),
                     child: Image.asset(
                       "assets/logo.png",
@@ -45,19 +53,12 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Chat",
-                      style: TextStyle(
-                          color: const Color(0xfffeb200), fontSize: 50.sp),
-                    ),
-                    Text(
-                      " App",
-                      style: TextStyle(color: Colors.white, fontSize: 50.sp),
-                    ),
-                  ],
+                Center(
+                  child: Text(
+                    "Chattify",
+                    style: TextStyle(
+                        color: const Color(0xfffeb200), fontSize: 50.sp),
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: 25.h, top: 80.h),
@@ -69,18 +70,17 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 CustomTextFormField(
                   validate: (data) {
-                    if (data!.isEmpty) {
-                      return "field is required";
-                    }
-
+                    if (data!.isEmpty) return "field is required";
+                    return null;
                   },
                   onchange: (data) {
                     email = data;
                   },
+                  keyboardType: TextInputType.emailAddress,
                   obscure: false,
                   hint: "Enter your E-mail",
                   label: SizedBox(
-                    width: 101.w,
+                    width: 105.w,
                     child: Row(
                       children: [
                         Icon(
@@ -102,12 +102,13 @@ class _LoginPageState extends State<LoginPage> {
                     if (data!.isEmpty) {
                       return "field is required";
                     }
-
+                    return null;
                   },
                   onchange: (data) {
                     pass = data;
                   },
                   hint: "Enter your Password",
+                  keyboardType: TextInputType.visiblePassword,
                   label: SizedBox(
                     width: 135.w,
                     child: Row(
@@ -125,43 +126,44 @@ class _LoginPageState extends State<LoginPage> {
                       ],
                     ),
                   ),
-                  obscure: passobsure,
+                  obscure: passobscure,
                   suffix: InkWell(
-                    highlightColor: const Color(0xffF8F8F8),
-                    splashColor: const Color(0xffF8F8F8),
+                    highlightColor: const Color(0xff2B475E),
+                    splashColor: const Color(0xff2B475E),
                     child: Icon(
-                      passobsure ? Icons.visibility_off : Icons.visibility,
+                      passobscure ? Icons.visibility_off : Icons.visibility,
                       color: Colors.grey,
                     ),
                     onTap: () {
                       setState(() {
-                        passobsure = !passobsure;
+                        passobscure = !passobscure;
                       });
                     },
                   ),
                 ),
                 CustomButton(
                     text: "Login",
-                    ontap: () async {
+                    onTap: () async {
                       if (formKey.currentState!.validate()) {
                         setState(() {
                           isLoading = true;
                         });
                         try {
                           await loginUser();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return ChatPage(
-                                  email: email!,
-                                );
-                              },
-                            ),
-                          );
+                          var user = await allUsers.doc(email).get();
+                          Navigator.pushAndRemoveUntil(context,
+                              MaterialPageRoute(builder: (context) {
+                            return HomePage(
+                                email: email!,
+                                groupBack: false,
+                                profilePhoto: user['profilePhoto']);
+                          }), (route) => false);
                         } catch (e) {
                           showSnackBar(
-                              context, "check email or password and try again");
+                              context,
+                              "check email or password and try again",
+                              "Login failed",
+                              ContentType.failure);
                         }
                         setState(() {
                           isLoading = false;
@@ -204,7 +206,14 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> loginUser() async {
-     await FirebaseAuth.instance
+    await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email!, password: pass!);
+    var token =  await FirebaseAuth.instance.currentUser!.getIdToken();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token.toString());
+    await prefs.setString('email', email!);
+    var userx = await allUsers.doc(email).get();
+    await prefs.setString('profilePhoto', userx['profilePhoto']);
+
   }
 }
