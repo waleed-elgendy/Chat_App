@@ -37,6 +37,16 @@ class ChatsListView extends StatelessWidget {
                   "username": allUsersList[index].username,
                   "profilePhoto": allUsersList[index].profilePhoto,
                 });
+                CollectionReference friendsX =
+                FirebaseFirestore.instance.collection("users/${allUsersList[index].email}/friends");
+                CollectionReference allUsers =
+                FirebaseFirestore.instance.collection('allUsers');
+                var userX = await allUsers.doc(email).get();
+                await friendsX.doc(email).set({
+                  'email': email,
+                  "username": userX['username'],
+                  "profilePhoto": userX['profilePhoto'],
+                });
                 Navigator.pop(context);
                 showSnackBar(
                     context,

@@ -28,6 +28,10 @@ class UserChatPage extends StatelessWidget {
         .collection('users/$email/chats/${friend.email}/chatMessages');
     CollectionReference chatsUser =
         FirebaseFirestore.instance.collection('users/$email/chats');
+    CollectionReference chatMessages2 = FirebaseFirestore.instance
+        .collection('users/${friend.email}/chats/$email/chatMessages');
+    CollectionReference chatsUser2 =
+    FirebaseFirestore.instance.collection('users/${friend.email}/chats');
     return PopScope(
       canPop: false,
       onPopInvoked: (x) async {
@@ -143,7 +147,7 @@ class UserChatPage extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20.dm),
                           ),
                           suffixIcon: IconButton(
-                              onPressed: ()  {
+                              onPressed: ()  async {
                                 if (message != '') {
                                    chatMessages.add({
                                     'message': message,
@@ -158,6 +162,21 @@ class UserChatPage extends StatelessWidget {
                                     "lastMessage":message,
                                     "time":DateTime.now().toString(),
                                     "email":friend.email
+                                  });
+                                  chatMessages2.add({
+                                    'message': message,
+                                    'time': DateTime.now(),
+                                    'id': email,
+                                    "profilePhoto": "",
+                                    "username": "",
+                                  });
+                                  var userX = await allUsers.doc(email).get();
+                                  chatsUser2.doc(email).set({
+                                    "username": userX['username'],
+                                    "profilePhoto": userX['profilePhoto'],
+                                    "lastMessage": message,
+                                    "time": DateTime.now().toString(),
+                                    "email": email
                                   });
                                 }
                                 message = '';

@@ -102,7 +102,7 @@ class ChatBubble extends StatelessWidget {
                 children: [
                   Padding(
                     padding: EdgeInsets.only(
-                        left: 15.w, top: 15.h, bottom: 4.h, right: 15.w),
+                        left: 15.w, top: 15.h, bottom: 8.h, right: 15.w),
                     child: Text(
                       maxLines: null,
                       message.messageText,

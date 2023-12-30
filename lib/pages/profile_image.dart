@@ -305,7 +305,7 @@ class _ProfileImageState extends State<ProfileImage> {
                         height: 50.h,
                         child: Center(
                           child: Text(
-                            "ok",
+                            "Apply",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 20.sp,
