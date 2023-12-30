@@ -26,10 +26,10 @@ class UserChatPage extends StatelessWidget {
   Widget build(BuildContext context) {
     CollectionReference chatMessages = FirebaseFirestore.instance
         .collection('users/$email/chats/${friend.email}/chatMessages');
-    CollectionReference chatsUser =
-        FirebaseFirestore.instance.collection('users/$email/chats');
     CollectionReference chatMessages2 = FirebaseFirestore.instance
         .collection('users/${friend.email}/chats/$email/chatMessages');
+    CollectionReference chatsUser =
+        FirebaseFirestore.instance.collection('users/$email/chats');
     CollectionReference chatsUser2 =
     FirebaseFirestore.instance.collection('users/${friend.email}/chats');
     return PopScope(
@@ -156,19 +156,19 @@ class UserChatPage extends StatelessWidget {
                                     "profilePhoto": "",
                                     "username": "",
                                   });
+                                   chatMessages2.add({
+                                     'message': message,
+                                     'time': DateTime.now(),
+                                     'id': email,
+                                     "profilePhoto": "",
+                                     "username": "",
+                                   });
                                    chatsUser.doc(friend.email).set({
                                     "username": friend.username,
                                     "profilePhoto": friend.profilePhoto,
                                     "lastMessage":message,
                                     "time":DateTime.now().toString(),
                                     "email":friend.email
-                                  });
-                                  chatMessages2.add({
-                                    'message': message,
-                                    'time': DateTime.now(),
-                                    'id': friend.email,
-                                    "profilePhoto": "",
-                                    "username": "",
                                   });
                                   var userX = await allUsers.doc(email).get();
                                   chatsUser2.doc(email).set({
