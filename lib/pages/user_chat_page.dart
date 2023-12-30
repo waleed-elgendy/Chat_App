@@ -166,7 +166,7 @@ class UserChatPage extends StatelessWidget {
                                   chatMessages2.add({
                                     'message': message,
                                     'time': DateTime.now(),
-                                    'id': email,
+                                    'id': friend.email,
                                     "profilePhoto": "",
                                     "username": "",
                                   });
