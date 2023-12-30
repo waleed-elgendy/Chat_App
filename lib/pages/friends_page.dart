@@ -1,4 +1,5 @@
 import 'package:chat_app/models/all_users_model.dart';
+import 'package:chat_app/pages/all_users_page.dart';
 import 'package:chat_app/shared_widgets/chats_list_view.dart';
 import 'package:chat_app/shared_widgets/constants.dart';
 import 'package:chat_app/shared_widgets/search_field.dart';
@@ -26,7 +27,7 @@ class FriendsPage extends StatelessWidget {
             return Padding(
               padding: EdgeInsets.only(top: 50.h),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 15.w),
@@ -42,14 +43,25 @@ class FriendsPage extends StatelessWidget {
                   ),
                   SizedBox(height: 20.h),
 
-                  SizedBox(
-                      height: 320.h, child: Image.asset("assets/friends.png")),
-                  Text(
-                    "   your friends list is empty\n          add friends now",
-                    style: TextStyle(
-                        color: primaryColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22.sp),
+                  Center(
+                    child: SizedBox(
+                        height: 320.h, child: Image.asset("assets/friends.png")),
+                  ),
+                  Center(
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) {
+                          return AllUsers(email: email);
+                        },));
+                      },
+                      child: Text(
+                        "   your friends list is empty\n          add friends now",
+                        style: TextStyle(
+                            color: primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 22.sp),
+                      ),
+                    ),
                   ),
                 ],
               ),

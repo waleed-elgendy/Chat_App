@@ -22,106 +22,111 @@ class AllUsers extends StatelessWidget {
         if (snapshot.hasData) {
           List<AllUsersModel> allUsersList = [];
           for (int i = 0; i < snapshot.data!.docs.length; i++) {
-            allUsersList.add(
-              AllUsersModel.fromJson(snapshot.data!.docs[i]),
-            );
-            if (allUsersList[i].email == email) {
-              allUsersList.removeAt(i);
+            if (snapshot.data!.docs[i]['email'] != email) {
+              allUsersList.add(
+                AllUsersModel.fromJson(snapshot.data!.docs[i]),
+              );
             }
           }
           if (allUsersList.isEmpty) {
-            return Padding(
-              padding: EdgeInsets.only(top: 63.h),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 20.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                            flex: 1,
-                            child: IconButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                icon: const Icon(Icons.arrow_back))),
-                        const Expanded(flex: 8, child: SearchField()),
-                      ],
+            return Scaffold(
+              body: Padding(
+                padding: EdgeInsets.only(top: 63.h),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                              flex: 1,
+                              child: IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: const Icon(Icons.arrow_back))),
+                          const Expanded(flex: 8, child: SearchField()),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 30.h,
-                  ),
-                  SizedBox(height: 320.h, child: Image.asset("assets/img.jpg")),
-                  Text(
-                    "No users found",
-                    style: TextStyle(
-                        color: primaryColor,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 22.sp),
-                  ),
-                ],
+                    SizedBox(
+                      height: 30.h,
+                    ),
+                    SizedBox(height: 320.h, child: Image.asset("assets/img.jpg")),
+                    Text(
+                      "No users found",
+                      style: TextStyle(
+                          color: primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 22.sp),
+                    ),
+                  ],
+                ),
               ),
             );
           } else {
-            return Padding(
-              padding: EdgeInsets.only(top: 63.h),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 20.h),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Expanded(
-                            flex: 1,
-                            child: IconButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                icon: const Icon(Icons.arrow_back))),
-                        const Expanded(flex: 8, child: SearchField()),
-                      ],
+            return Scaffold(
+              body: Padding(
+                padding: EdgeInsets.only(top: 63.h),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 20.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                              flex: 1,
+                              child: IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: const Icon(Icons.arrow_back))),
+                          const Expanded(flex: 8, child: SearchField()),
+                        ],
+                      ),
                     ),
-                  ),
-                  ChatsListView(
-                    subTitle: null,
-                    trailing: const Icon(Icons.group_add_rounded),
-                    allUsersList: allUsersList,
-                    email: email,
-                    addNew: true,
-                    chatsPage: false,
-                  ),
-                ],
+                    ChatsListView(
+                      subTitle: null,
+                      trailing: const Icon(Icons.group_add_rounded),
+                      allUsersList: allUsersList,
+                      email: email,
+                      addNew: true,
+                      chatsPage: false,
+                    ),
+                  ],
+                ),
               ),
             );
           }
         } else {
-          return Padding(
-            padding: EdgeInsets.only(top: 63.h),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(bottom: 20.h),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Expanded(
-                          flex: 1,
-                          child: IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: const Icon(Icons.arrow_back))),
-                      const Expanded(flex: 8, child: SearchField()),
-                    ],
+          return Scaffold(
+            body: Padding(
+              padding: EdgeInsets.only(top: 63.h),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 20.h),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                            flex: 1,
+                            child: IconButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(Icons.arrow_back))),
+                        const Expanded(flex: 8, child: SearchField()),
+                      ],
+                    ),
                   ),
-                ),
-                const Center(
-                  child: CircularProgressIndicator(),
-                ),
-              ],
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ],
+              ),
             ),
           );
         }
